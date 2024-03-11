@@ -24,8 +24,9 @@ class _EmailVerificationState extends State<EmailVerification> {
 
             final user =  FirebaseAuth.instance.currentUser;
             await user?.sendEmailVerification();
-
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginView(),));
+            Future.delayed(Duration.zero,() {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginView(),));
+            },);
           }, child: const Text("Send verification ") )
         ],
       ),

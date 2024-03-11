@@ -1,9 +1,10 @@
-import 'package:a/main.dart';
+import 'package:a/main_page.dart';
 import 'package:a/register_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:a/firebase_options.dart';
+import 'dart:developer' as dev show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -75,18 +76,18 @@ class _LoginViewState extends State<LoginView> {
                     final email = _email.text;
                     final password = _password.text;
                     Future.delayed(Duration.zero, (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomePage(),));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainPage(),));
                     });
                     try{
                       final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-                      print(userCredential);
+                      dev.log(userCredential.toString());
                     }
                     on FirebaseAuthException catch (e) {
                       if (e.code == "invalid-credential"){
-                        print("User not found");
+                        dev.log("User not found");
                       }else{
-                        print ("Something unusual happened! ");
-                        print (e.code);
+                        dev.log ("Something unusual happened! ");
+                        dev.log (e.code);
                       }
                    }},
 
