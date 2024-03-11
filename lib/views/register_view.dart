@@ -1,18 +1,18 @@
-import 'package:a/register_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:a/Constants/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:a/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../firebase_options.dart';
 import 'dart:developer' as dev show log;
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
 
@@ -31,15 +31,17 @@ class _LoginViewState extends State<LoginView> {
 
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-        }, icon: const Icon(Icons.menu),tooltip: "Menu",),
-        title: const Text("Login"),
+        leading: IconButton(
+          onPressed: () {}, icon: const Icon(Icons.menu), tooltip: "Menu",),
+        title: const Text("Register"),
         actions: const [
-          IconButton(onPressed: null, icon: Icon(Icons.search) , tooltip: "Search",)
+          IconButton(
+            onPressed: null, icon: Icon(Icons.search), tooltip: "Search",)
         ],
 
         backgroundColor: Colors.blueAccent,
@@ -47,11 +49,10 @@ class _LoginViewState extends State<LoginView> {
       ),
       body: FutureBuilder(
         future: Firebase.initializeApp(
-          options:  DefaultFirebaseOptions.currentPlatform,
+          options: DefaultFirebaseOptions.currentPlatform,
         ),
         builder: (context, snapshot) {
-
-          switch (snapshot.connectionState){
+          switch (snapshot.connectionState) {
             case ConnectionState.done:
               return Column(
                 children: [
@@ -69,41 +70,46 @@ class _LoginViewState extends State<LoginView> {
                     decoration: const InputDecoration(
                         hintText: ("Password")
                     ),
-                    controller:  _password,
+                    controller: _password,
                   ),
-                  TextButton (onPressed: () async{
+                  TextButton(onPressed: () async {
                     final email = _email.text;
                     final password = _password.text;
-                      Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route) => false);
-                    try{
-                      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+                    try {
+                      final userCredential = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                          email: email, password: password);
                       dev.log(userCredential.toString());
-                    }
-                    on FirebaseAuthException catch (e) {
-                      if (e.code == "invalid-credential"){
-                        dev.log("User not found");
-                      }else{
-                        dev.log ("Something unusual happened! ");
-                        dev.log (e.code);
-                      }
-                   }},
+                      Future.delayed(Duration.zero, (){
+                        Navigator.of(context).pushNamedAndRemoveUntil(verificationRoute, (route) => false);
+                      });
+                    } on FirebaseAuthException catch(e){
 
-                      child: const Text("Login")
+                      if ( e.code == "weak-password"){
+                        dev.log("Weak Password");
+                      }else if (e.code == "email-already-in-use"){
+                        dev.log("Email already in use");
+                      }else if ( e.code == "invalid-email"){
+                        dev.log("Please use a valid Email format");
+                      }else{
+
+                      }
+                    }
+
+                  },
+                      child: const Text("Register")
                   ),
-                  const Text("OR"),
-                  TextButton(onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterView(),));
-                  }, child: const Text("Sign up"))
+
                 ],
               );
             default:
               return const Text("Loading ...");
           }
-
         },
       ),
 
     );
   }
-
 }
+
+

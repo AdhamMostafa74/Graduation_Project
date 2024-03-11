@@ -1,11 +1,12 @@
-import 'package:a/login_view.dart';
-import 'package:a/main_page.dart';
-import 'package:a/register_view.dart';
-import 'package:a/verification.dart';
+import 'package:a/Constants/routes.dart';
+import 'package:a/views/login_view.dart';
+import 'package:a/views/main_page.dart';
+import 'package:a/views/register_view.dart';
+import 'package:a/views/verification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart';
+import '../firebase_options.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +21,10 @@ void main() {
       ),
       home: const LoginView(),
       routes: {
-        "Login":(context) => const LoginView(),
-        "Register": (context) => const RegisterView(),
-        "MainPage": (context) => const MainPage()
+        loginRoute:(context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        mainPageRoute: (context) => const MainPage(),
+        verificationRoute: (context) => const EmailVerification(),
       },
   ))
 
@@ -71,7 +73,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   const Text("Done"),
                   TextButton(onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil("Register", (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
 
                   }, child:const Text("Login"))
                 ],

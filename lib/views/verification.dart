@@ -1,4 +1,4 @@
-import 'package:a/login_view.dart';
+import 'package:a/Constants/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _EmailVerificationState extends State<EmailVerification> {
             final user =  FirebaseAuth.instance.currentUser;
             await user?.sendEmailVerification();
             Future.delayed(Duration.zero,() {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginView(),));
+              Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
             },);
           }, child: const Text("Send verification ") )
         ],
