@@ -1,4 +1,3 @@
-import 'package:a/main_page.dart';
 import 'package:a/register_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -75,9 +74,7 @@ class _LoginViewState extends State<LoginView> {
                   TextButton (onPressed: () async{
                     final email = _email.text;
                     final password = _password.text;
-                    Future.delayed(Duration.zero, (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainPage(),));
-                    });
+                      Navigator.of(context).pushNamedAndRemoveUntil("MainPage", (route) => false);
                     try{
                       final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
                       dev.log(userCredential.toString());

@@ -1,4 +1,3 @@
-import 'package:a/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -28,17 +27,10 @@ class _MainPageState extends State<MainPage> {
                        if (shouldLogout){
                        await FirebaseAuth.instance.signOut();
                        Future.delayed(Duration.zero,() {
-                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginView(),));
-                       },);
+                         Navigator.of(context).pushNamedAndRemoveUntil("Login", (route) => false);
+                         },);
                     }
               }
-
-              // switch(value){
-              //   case MenuAction.logout:
-              //     final shouldLogout = await showLogoutDialogue(context);
-              //     dev.log(shouldLogout.toString());
-              //     break;
-              // }
             },
             itemBuilder: (context) {
               return const [
@@ -72,45 +64,3 @@ Future<bool> showLogoutDialogue (BuildContext context){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Future<bool> showDialogue(BuildContext context) {
-//   return showDialog(
-//     context: context,
-//     builder: (context) {
-//       return AlertDialog(
-//         title: const Text("Sign out"),
-//         content: const Text("Are you sure you want to LOGOUT? "),
-//         actions: [
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(false);
-//               },
-//               child: const Text("Cancel")),
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(true);
-//               },
-//               child: const Text("Logout")),
-//         ],
-//       );
-//     },
-//   ).then((value) => value ?? false);
-// }

@@ -1,4 +1,5 @@
 import 'package:a/login_view.dart';
+import 'package:a/main_page.dart';
 import 'package:a/register_view.dart';
 import 'package:a/verification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,8 +20,9 @@ void main() {
       ),
       home: const LoginView(),
       routes: {
-        "login":(context) => const LoginView(),
-        "Register": (context) => const RegisterView()
+        "Login":(context) => const LoginView(),
+        "Register": (context) => const RegisterView(),
+        "MainPage": (context) => const MainPage()
       },
   ))
 
@@ -70,11 +72,7 @@ class HomePage extends StatelessWidget {
                   const Text("Done"),
                   TextButton(onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil("Register", (route) => false);
-                    // Future.delayed(Duration.zero, () {
-                    //   Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => const EmailVerification(),
-                    //   ));
-                    // });
+
                   }, child:const Text("Login"))
                 ],
               );
