@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:a/firebase_options.dart';
-import '../utilities/dialogues.dart';
+import '../Constants/dialogues.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -31,85 +31,102 @@ class _LoginViewState extends State<LoginView> {
 
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-        }, icon: const Icon(Icons.menu),tooltip: "Menu",),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.menu),
+          tooltip: "Menu",
+        ),
         title: const Text("Login"),
         actions: const [
-          IconButton(onPressed: null, icon: Icon(Icons.search) , tooltip: "Search",)
+          IconButton(
+            onPressed: null,
+            icon: Icon(Icons.search),
+            tooltip: "Search",
+          )
         ],
-
         backgroundColor: Colors.blueAccent,
-
       ),
       body: FutureBuilder(
         future: Firebase.initializeApp(
-          options:  DefaultFirebaseOptions.currentPlatform,
+          options: DefaultFirebaseOptions.currentPlatform,
         ),
         builder: (context, snapshot) {
-
-          switch (snapshot.connectionState){
+          switch (snapshot.connectionState) {
             case ConnectionState.done:
               return Column(
                 children: [
                   TextField(
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                        hintText: ("E-mail")
-                    ),
+                    decoration: const InputDecoration(hintText: ("E-mail")),
                     controller: _email,
                   ),
                   TextField(
                     obscureText: true,
                     enableSuggestions: false,
                     autocorrect: false,
-                    decoration: const InputDecoration(
-                        hintText: ("Password")
-                    ),
-                    controller:  _password,
+                    decoration: const InputDecoration(hintText: ("Password")),
+                    controller: _password,
                   ),
-                  TextButton (onPressed: () async{
-                    final email = _email.text;
-                    final password = _password.text;
-                    try{
-                      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-                      if(context.mounted) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(mainPageRoute, (route) => false);
-                      }
+                  TextButton(
+                      onPressed: () async {
+                        final email = _email.text;
+                        final password = _password.text;
+                        try {
+                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+                         final user = FirebaseAuth.instance.currentUser;
 
-                    }
-                    on FirebaseAuthException catch (e) {
-                      if (e.code == "invalid-credential"){
-                        if(context.mounted) {
-                          await showErrorDialogue(context, "Wrong Email or Password");
+                          if (user?.emailVerified ?? false) {
+                            if (context.mounted){
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  mainPageRoute, (route) => false);
+                            }
+
+                          }else{
+                            if (context.mounted){
+                              showRedirectingDialogue(context);
+                              Future.delayed(const Duration(milliseconds: 3000), () {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    verificationRoute, (route) => false);
+                              },);
+                            }
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == "invalid-credential") {
+                            if (context.mounted) {
+                              await showErrorDialogue(
+                                  context, "Wrong Email or Password");
+                            }
+                          } else {
+                            if (context.mounted) {
+                              await showErrorDialogue(context, e.code);
+                            }
+                          }
+                        } catch(e){
+                          if(context.mounted) {
+                           await showErrorDialogue(context, e.toString());
+                          }
                         }
-                      }else{
-                        if(context.mounted) {
-                          await showErrorDialogue(context, e.code);
-                        }
-
-                      }
-                   }},
-
-                      child: const Text("Login")
-                  ),
+                      },
+                      child: const Text("Login")),
                   const Text("OR"),
-                  TextButton(onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
-                  }, child: const Text("Sign up"))
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            registerRoute, (route) => false);
+                      },
+                      child: const Text("Sign up"))
                 ],
               );
             default:
               return const Text("Loading ...");
           }
-
         },
       ),
-
     );
   }
-
 }

@@ -1,4 +1,5 @@
-const loginRoute = "Login" ;
-const registerRoute = "Register" ;
+const loginRoute = "Login";
+const registerRoute = "Register";
 const mainPageRoute = "Main Page";
 const verificationRoute = "Email verification";
+const homePageRoute = "Home page";

@@ -12,23 +12,20 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Register',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-
-      ),
-      home: const LoginView(),
-      routes: {
-        loginRoute:(context) => const LoginView(),
-        registerRoute: (context) => const RegisterView(),
-        mainPageRoute: (context) => const MainPage(),
-        verificationRoute: (context) => const EmailVerification(),
-      },
-  ))
-
-  ;
+    debugShowCheckedModeBanner: false,
+    title: 'Register',
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
+    ),
+    home: const HomePage(),
+    routes: {
+      loginRoute: (context) => const LoginView(),
+      registerRoute: (context) => const RegisterView(),
+      mainPageRoute: (context) => const MainPage(),
+      verificationRoute: (context) => const EmailVerification(),
+    },
+  ));
 }
 
 class HomePage extends StatelessWidget {
@@ -43,7 +40,7 @@ class HomePage extends StatelessWidget {
           icon: const Icon(Icons.menu),
           tooltip: "Menu",
         ),
-        title: const Text("Verified"),
+        title: const Text("Loading"),
         actions: const [
           IconButton(
             onPressed: null,
@@ -61,23 +58,31 @@ class HomePage extends StatelessWidget {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               final user = FirebaseAuth.instance.currentUser;
-              if (user?.emailVerified ?? false) {
-              } else {
-                Future.delayed(Duration.zero, () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const EmailVerification(),
-                  ));
-                });
+              if(user != null){
+                if (user.emailVerified) {
+                  Future.delayed(
+                    const Duration(milliseconds: 0),
+                        () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          mainPageRoute, (route) => false);
+                    },
+                  );
+                } else {
+                  Future.delayed(const Duration(milliseconds: 2000), () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const EmailVerification(),
+                    ));
+                  });
+                }
+              }else{
+                Future.delayed(
+                  const Duration(milliseconds: 1200),
+                      () {
+                    Navigator.of(context).pushNamed(loginRoute);
+                  },
+                );
               }
-              return  Column(
-                children: [
-                  const Text("Done"),
-                  TextButton(onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
-
-                  }, child:const Text("Login"))
-                ],
-              );
+              return const CircularProgressIndicator();
 
             default:
               return const CircularProgressIndicator();

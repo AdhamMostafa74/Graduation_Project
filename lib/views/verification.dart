@@ -1,5 +1,5 @@
 import 'package:a/Constants/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:a/Constants/dialogues.dart';
 import 'package:flutter/material.dart';
 
 class EmailVerification extends StatefulWidget {
@@ -12,22 +12,33 @@ class EmailVerification extends StatefulWidget {
 class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-
-      appBar:AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: const Text("Verification"),
+        backgroundColor: Colors.blueAccent,
       ),
       body: Column(
         children: [
           const Text("Please verify your Email"),
-          TextButton(onPressed: () async {
-
-            final user =  FirebaseAuth.instance.currentUser;
-            await user?.sendEmailVerification();
-            Future.delayed(Duration.zero,() {
-              Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
-            },);
-          }, child: const Text("Send verification ") )
+          TextButton(
+              onPressed: () async {
+                await showVerificationDialogue(context, "Email sent!", "Ok");
+                Future.delayed(
+                  const Duration(milliseconds: 3000),
+                  () {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+                  },
+                );
+              },
+              child: const Text("Send verification ")),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(loginRoute, (route) => false);
+            },
+            child: const Text("Already verified ? Login here"),
+          ),
         ],
       ),
     );
