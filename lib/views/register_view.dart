@@ -1,9 +1,8 @@
 import 'package:a/Constants/routes.dart';
 import 'package:a/Constants/dialogues.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:a/Services/auth_exceptions.dart';
+import 'package:a/Services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -52,9 +51,7 @@ class _RegisterViewState extends State<RegisterView> {
         backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
+        future: AuthService.firebase().initialize(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
@@ -76,38 +73,36 @@ class _RegisterViewState extends State<RegisterView> {
                       onPressed: () async {
                         final email = _email.text;
                         final password = _password.text;
-                        final user = FirebaseAuth.instance.currentUser;
-                        await user?.sendEmailVerification();
+                        await AuthService.firebase().sendEmailVerification();
                         try {
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: email, password: password);
+                          await AuthService.firebase()
+                              .register(email: email, password: password);
+                          await AuthService.firebase()
+                              .login(email: email, password: password);
+
                           Future.delayed(Duration.zero, () {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 verificationRoute, (route) => false);
                           });
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == "weak-password") {
-                            if (context.mounted) {
-                              await  showErrorDialogue(context, "Weak password.");
-                            }
-                          } else if (e.code == "email-already-in-use") {
+                        } on WeakPasswordAuthException {
+                          if (context.mounted) {
+                            await showErrorDialogue(context, "Weak Password");
+                          }
+                        } on EmailAlreadyInUserAuthException {
+                          if (context.mounted) {
+                            await showErrorDialogue(
+                                context, "Email already in use.");
+                          }
+                        } on InvalidEmailAuthException {
+                          {
                             if (context.mounted) {
                               await showErrorDialogue(
-                                  context, "Email already in use.");
-                            }
-                          } else if (e.code == "invalid-email") {
-                            if (context.mounted) {
-                              await showErrorDialogue(context, "Invalid email.");
-                            }
-                          } else {
-                            if (context.mounted) {
-                              await showErrorDialogue(context, e.code);
+                                  context, "Invalid email.");
                             }
                           }
-                        } catch (e) {
+                        } on GenericAuthAuthException {
                           if (context.mounted) {
-                            await showErrorDialogue(context, e.toString());
+                            await showErrorDialogue(context, "Unknown Error");
                           }
                         }
                       },

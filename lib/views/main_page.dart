@@ -1,7 +1,6 @@
-import 'package:a/firebase_options.dart';
+import 'package:a/Constants/enums.dart';
+import 'package:a/Services/auth_service.dart';
 import 'package:a/views/verification.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev show log;
 import '../Constants/dialogues.dart';
@@ -12,8 +11,6 @@ class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
 }
-
-enum MenuAction { logout }
 
 class _MainPageState extends State<MainPage> {
   @override
@@ -29,7 +26,7 @@ class _MainPageState extends State<MainPage> {
                   case MenuAction.logout:
                     final shouldLogout = await showLogoutDialogue(context);
                     if (shouldLogout) {
-                      await FirebaseAuth.instance.signOut();
+                      await AuthService.firebase().logout();
                       Future.delayed(
                         Duration.zero,
                         () {
@@ -52,19 +49,21 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
         body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
-          ),
+          future: AuthService.firebase().initialize(),
           builder: (context, snapshot) {
-            final user = FirebaseAuth.instance.currentUser;
-            user?.reload();
+            final user = AuthService.firebase().currentUser;
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                if (user?.emailVerified ?? false) {
+                if (user?.isEmailVerified ?? false) {
                 } else {
-                  Future.delayed(const Duration(milliseconds: 0) ,() {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EmailVerification(),));
-                  }, );
+                  Future.delayed(
+                    const Duration(milliseconds: 0),
+                    () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const EmailVerification(),
+                      ));
+                    },
+                  );
                 }
                 return Column(
                   children: [
@@ -79,8 +78,7 @@ class _MainPageState extends State<MainPage> {
                 return const CircularProgressIndicator();
             }
           },
-        )
-    );
+        ));
   }
   //
 }

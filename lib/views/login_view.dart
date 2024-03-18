@@ -1,9 +1,8 @@
 import 'package:a/Constants/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:a/Services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:a/firebase_options.dart';
 import '../Constants/dialogues.dart';
+import '../Services/auth_exceptions.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -52,9 +51,7 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
+        future: AuthService.firebase().initialize(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
@@ -77,38 +74,39 @@ class _LoginViewState extends State<LoginView> {
                         final email = _email.text;
                         final password = _password.text;
                         try {
-                         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-                         final user = FirebaseAuth.instance.currentUser;
+                          await AuthService.firebase()
+                              .login(email: email, password: password);
+                          final user = AuthService.firebase().currentUser;
 
-                          if (user?.emailVerified ?? false) {
-                            if (context.mounted){
+                          if (user?.isEmailVerified ?? false) {
+                            if (context.mounted) {
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   mainPageRoute, (route) => false);
                             }
-
-                          }else{
-                            if (context.mounted){
-                              showRedirectingDialogue(context);
-                              Future.delayed(const Duration(milliseconds: 3000), () {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    verificationRoute, (route) => false);
-                              },);
-                            }
-                          }
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == "invalid-credential") {
-                            if (context.mounted) {
-                              await showErrorDialogue(
-                                  context, "Wrong Email or Password");
-                            }
                           } else {
                             if (context.mounted) {
-                              await showErrorDialogue(context, e.code);
+                              showRedirectingDialogue(context);
+                              Future.delayed(
+                                const Duration(milliseconds: 3000),
+                                () {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      verificationRoute, (route) => false);
+                                },
+                              );
                             }
                           }
-                        } catch(e){
-                          if(context.mounted) {
-                           await showErrorDialogue(context, e.toString());
+                        } on UserNotFoundAuthException {
+                          if (context.mounted) {
+                            await showErrorDialogue(context, "User not found");
+                          }
+                        } on WrongPasswordAuthException {
+                          if (context.mounted) {
+                            await showErrorDialogue(context, "Wrong Password");
+                          }
+                        } on GenericAuthAuthException {
+                          if (context.mounted) {
+                            await showErrorDialogue(
+                                context, "Authentication Error");
                           }
                         }
                       },

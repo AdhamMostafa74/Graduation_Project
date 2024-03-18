@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:a/Services/auth_user.dart';
 
 abstract class AuthProvider {
+  Future<void> initialize();
   AuthUser? get currentUser;
 
   Future<AuthUser> login({
