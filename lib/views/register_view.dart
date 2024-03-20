@@ -73,13 +73,16 @@ class _RegisterViewState extends State<RegisterView> {
                       onPressed: () async {
                         final email = _email.text;
                         final password = _password.text;
-                        await AuthService.firebase().sendEmailVerification();
+                        final user = AuthService.firebase().currentUser;
+                        if (user != null) {
+                          if (user.isEmailVerified) {
+                            await AuthService.firebase()
+                                .sendEmailVerification();
+                          }
+                        }
                         try {
                           await AuthService.firebase()
                               .register(email: email, password: password);
-                          await AuthService.firebase()
-                              .login(email: email, password: password);
-
                           Future.delayed(Duration.zero, () {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 verificationRoute, (route) => false);

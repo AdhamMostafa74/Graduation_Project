@@ -1,3 +1,4 @@
+import 'package:a/Services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 import 'package:a/Services/auth_provider.dart';
@@ -67,6 +68,8 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
+      await AuthService.firebase().login(email: email, password: password);
+
       final user = currentUser;
       if (user != null) {
         return user;
@@ -101,6 +104,7 @@ class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<void> initialize() async {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
 }
