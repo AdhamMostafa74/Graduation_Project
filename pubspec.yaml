@@ -40,6 +40,10 @@ dependencies:
   sqflite: ^2.3.2
   path_provider: ^2.1.2
   path: ^1.9.0
+  shared_preferences: ^2.2.3
+  dots_indicator: ^3.0.0
+  smooth_page_indicator: ^1.1.0
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
@@ -65,9 +69,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

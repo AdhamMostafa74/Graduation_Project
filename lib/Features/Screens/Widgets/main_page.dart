@@ -1,9 +1,12 @@
-import 'package:a/Constants/enums.dart';
-import 'package:a/Services/auth_service.dart';
-import 'package:a/views/verification.dart';
+
+
+import 'package:a/Features/Screens/Widgets/verification.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev show log;
-import '../Constants/dialogues.dart';
+
+import '../../../Constants/dialogues.dart';
+import '../../../Constants/enums.dart';
+import '../../../Services/auth_service.dart';
+import '../../../Services/crud/notes_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -11,8 +14,21 @@ class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
 }
-
 class _MainPageState extends State<MainPage> {
+  late final NotesService _notesService;
+  String get userEmail => AuthService.firebase().currentUser!.email!;
+  @override
+  void initState() {
+    _notesService = NotesService();
+    _notesService.open();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,13 +81,8 @@ class _MainPageState extends State<MainPage> {
                     },
                   );
                 }
-                return Column(
+                return const Column(
                   children: [
-                    TextButton(
-                        onPressed: () {
-                          dev.log((user).toString());
-                        },
-                        child: const Text("Test"))
                   ],
                 );
               default:
