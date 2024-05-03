@@ -1,7 +1,7 @@
-
-
-import 'package:a/Features/Screens/Widgets/verification.dart';
+import 'package:a/Features/Screens/Widgets/login_view.dart';
+import 'package:a/Services/firebase_auth_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../Constants/dialogues.dart';
 import '../../../Constants/enums.dart';
@@ -14,15 +14,18 @@ class MainPage extends StatefulWidget {
   @override
   State<MainPage> createState() => _MainPageState();
 }
+
 class _MainPageState extends State<MainPage> {
   late final NotesService _notesService;
   String get userEmail => AuthService.firebase().currentUser!.email!;
+  // final bool emailVerified = FirebaseAuthProvider().currentUser.isEmailVerified;
   @override
   void initState() {
     _notesService = NotesService();
     _notesService.open();
     super.initState();
   }
+
   @override
   void dispose() {
     _notesService.close();
@@ -46,18 +49,25 @@ class _MainPageState extends State<MainPage> {
                       Future.delayed(
                         Duration.zero,
                         () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              "Login", (route) => false);
+                          Get.to(() => const LoginView(),
+                              transition: Transition.fadeIn);
                         },
                       );
                     }
                 }
               },
               itemBuilder: (context) {
-                return const [
+                return [
                   PopupMenuItem<MenuAction>(
+                    enabled: FirebaseAuthProvider().currentUser == null
+                        ? false
+                        : true,
                     value: MenuAction.logout,
-                    child: Text("Logout"),
+                    child: Visibility(
+                        visible: FirebaseAuthProvider().currentUser == null
+                            ? false
+                            : true,
+                        child: const Text("Logout")),
                   )
                 ];
               },
@@ -72,18 +82,17 @@ class _MainPageState extends State<MainPage> {
               case ConnectionState.done:
                 if (user?.isEmailVerified ?? false) {
                 } else {
-                  Future.delayed(
-                    const Duration(milliseconds: 0),
-                    () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const EmailVerification(),
-                      ));
-                    },
-                  );
+                  // Future.delayed(
+                  //   const Duration(milliseconds: 0),
+                  //   () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => const EmailVerification(),
+                  //     ));
+                  //   },
+                  // );
                 }
                 return const Column(
-                  children: [
-                  ],
+                  children: [],
                 );
               default:
                 return const CircularProgressIndicator();

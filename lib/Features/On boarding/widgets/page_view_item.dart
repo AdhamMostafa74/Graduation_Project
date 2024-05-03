@@ -22,18 +22,24 @@ class PageViewItem extends StatelessWidget {
               child: Image.asset(image!),
             ),
             const VerticalSpacer(2),
-            Text(
-              title!,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  title!,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const VerticalSpacer(3),
+                Text(
+                  subTitle!,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                )
+              ],
             ),
-            const VerticalSpacer(3),
-            Text(
-              subTitle!,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            )
           ],
         ),
       ],

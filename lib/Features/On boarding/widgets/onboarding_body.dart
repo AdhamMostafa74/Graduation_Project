@@ -41,13 +41,17 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
             child: Positioned(
               top: Sizing.defaultSize! * 10,
               right: 32,
-              child: const Text(
-                "skip",
+              child:  TextButton(
+                onPressed: (){
+                  Get.to(const LoginView() , transition: Transition.rightToLeft , duration:  const Duration(milliseconds: 800));
+                },
+                child: const  Text
+                ("skip",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
-                ),
+                ),)
               ),
             ),
           ),
@@ -70,13 +74,13 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
               onTap: () {
                 if (pageController!.page! < 1) {
                   pageController!.nextPage(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 500),
                       curve: Curves.easeIn);
                 } else {
                   Get.to(
                     () => const LoginView(),
                     transition: Transition.rightToLeft,
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 500),
                   );
                 }
               },

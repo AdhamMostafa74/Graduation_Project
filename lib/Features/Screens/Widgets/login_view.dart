@@ -1,6 +1,15 @@
-import 'package:a/Constants/routes.dart';
+import 'package:a/Constants/colors.dart';
+import 'package:a/Features/On%20boarding/widgets/app_bar_content.dart';
+import 'package:a/Features/Screens/Widgets/main_page.dart';
+import 'package:a/Features/Screens/Widgets/register_view.dart';
+import 'package:a/Features/Screens/Widgets/verification.dart';
 import 'package:a/Services/auth_service.dart';
+import 'package:a/Utilities/Media_Query.dart';
+import 'package:a/Utilities/buttons.dart';
+import 'package:a/Utilities/space_Widget.dart';
+import 'package:a/Utilities/text_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../Constants/dialogues.dart';
 import '../../../Services/auth_exceptions.dart';
 
@@ -34,21 +43,16 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
-          tooltip: "Menu",
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            colors: [mainColor, mainBlue],
+          )),
+          child: const AppBarContent(text: "Login into your Account",),
         ),
-        title: const Text("Login"),
-        actions: const [
-          IconButton(
-            onPressed: null,
-            icon: Icon(Icons.search),
-            tooltip: "Search",
-          )
-        ],
-        backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder(
         future: AuthService.firebase().initialize(),
@@ -56,68 +60,95 @@ class _LoginViewState extends State<LoginView> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(hintText: ("E-mail")),
-                    controller: _email,
+                  const VerticalSpacer(5),
+                  CustomTextField(
+                    textInputType: true,
+                    obscureText: false,
+                    autoCorrect: true,
+                    text: "email",
+                    textEditingController: _email,
+                    suggestions: true,
                   ),
-                  TextField(
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    decoration: const InputDecoration(hintText: ("Password")),
-                    controller: _password,
+                  const VerticalSpacer(2),
+                  CustomPasswordField(
+                    text: "Password",
+                    textEditingController: _password,
                   ),
-                  TextButton(
-                      onPressed: () async {
-                        final email = _email.text;
-                        final password = _password.text;
-                        try {
-                          await AuthService.firebase()
-                              .login(email: email, password: password);
-                          final user = AuthService.firebase().currentUser;
+                  const VerticalSpacer(3),
+                  GeneralButton(
+                    onTap: () async {
+                      final email = _email.text;
+                      final password = _password.text;
+                      try {
+                        await AuthService.firebase()
+                            .login(email: email, password: password);
+                        final user = AuthService.firebase().currentUser;
 
-                          if (user?.isEmailVerified ?? false) {
-                            if (context.mounted) {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  mainPageRoute, (route) => false);
-                            }
-                          } else {
-                            if (context.mounted) {
-                              showRedirectingDialogue(context);
-                              Future.delayed(
-                                const Duration(milliseconds: 3000),
-                                () {
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      verificationRoute, (route) => false);
-                                },
-                              );
-                            }
-                          }
-                        } on UserNotFoundAuthException {
+                        if (user?.isEmailVerified ?? false) {
                           if (context.mounted) {
-                            await showErrorDialogue(context, "User not found");
+                            Get.to(() => const MainPage(),
+                                transition: Transition.fadeIn);
                           }
-                        } on WrongPasswordAuthException {
+                        } else {
                           if (context.mounted) {
-                            await showErrorDialogue(context, "Wrong Password");
-                          }
-                        } on GenericAuthAuthException {
-                          if (context.mounted) {
-                            await showErrorDialogue(
-                                context, "Authentication Error");
+                            showRedirectingDialogue(context);
+                            Future.delayed(
+                              const Duration(milliseconds: 3000),
+                              () {
+                                Get.to(() => const EmailVerification(),
+                                    transition: Transition.fadeIn);
+                              },
+                            );
                           }
                         }
-                      },
-                      child: const Text("Login")),
-                  const Text("OR"),
+                      } on UserNotFoundAuthException {
+                        if (context.mounted) {
+                          await showErrorDialogue(context, "User not found");
+                        }
+                      } on WrongPasswordAuthException {
+                        if (context.mounted) {
+                          await showErrorDialogue(context, "Wrong Password");
+                        }
+                      } on GenericAuthAuthException {
+                        if (context.mounted) {
+                          await showErrorDialogue(
+                              context, "Authentication Error");
+                        }
+                      }
+                    },
+                    text: ("Login"),
+                  ),
+                  const VerticalSpacer(1),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      HorizontalSpacer(Sizing.defaultSize!),
+                      const Text("Don't have an account?"),
+                      TextButton(
+                          onPressed: () {
+                            Get.to(() => const RegisterView(),
+                                transition: Transition.fadeIn);
+                          },
+                          child: const Text(
+                            "Sign up",
+                            style: TextStyle(color: mainColor, decoration: TextDecoration.underline),
+
+                          )),
+                    ],
+                  ),
                   TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            registerRoute, (route) => false);
-                      },
-                      child: const Text("Sign up"))
+                    onPressed: () {
+                      Get.to(() => const MainPage(),
+                          transition: Transition.fadeIn);
+                    },
+                    child: const Text(
+                      "Continue as a Guest",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black , decoration:  TextDecoration.underline),
+                    ),
+                  )
                 ],
               );
             default:

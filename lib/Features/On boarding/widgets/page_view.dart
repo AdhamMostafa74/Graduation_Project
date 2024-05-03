@@ -13,7 +13,7 @@ class CustomPageView extends StatelessWidget {
       children: const [
         PageViewItem(
           title:
-              "Get a real offer for your car.\nLicensed, Bonded and Insured.",
+              "Get A Real Offer For Your Car.\nLicensed, Bonded and Insured.",
           subTitle: "Skip the Dealership, We Come To You!",
           image: "assets/images/onboarding1.png",
         ),

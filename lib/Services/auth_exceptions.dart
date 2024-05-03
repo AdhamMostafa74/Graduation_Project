@@ -15,3 +15,5 @@ class GenericAuthAuthException implements Exception {}
 
 class UserNotLoggedInAuthAuthException implements Exception {}
 
+class PasswordDoesNotMatch implements Exception{}
+

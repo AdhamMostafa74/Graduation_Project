@@ -1,5 +1,4 @@
-import 'package:a/Constants/Colors.dart';
-import 'package:a/Utilities/Media_Query.dart';
+import 'package:a/Constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class GeneralButton extends StatelessWidget {
@@ -12,15 +11,15 @@ class GeneralButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 60,
-        width: Sizing.defaultSize,
+        width: 325,
         decoration:  BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(20),
           color: mainColor,
         ),
         child:  Center(
           child: Text(
             text!,
-            style: const TextStyle(color: Colors.white , fontSize: 20),
+            style: const TextStyle(color: Colors.white , fontSize: 20 , fontWeight: FontWeight.bold),
           ),
         ),
       ),
