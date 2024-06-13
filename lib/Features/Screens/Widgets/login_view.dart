@@ -119,6 +119,7 @@ class _LoginViewState extends State<LoginView> {
                       }
                     },
                     text: ("Login"),
+                    width: Sizing.defaultSize! * 35,
                   ),
                   const VerticalSpacer(1),
                   Row(

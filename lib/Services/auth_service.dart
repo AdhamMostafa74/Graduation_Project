@@ -26,10 +26,14 @@ class AuthService implements AuthProvider {
 
   @override
   Future<AuthUser> register({
+    required String firstName,
+    required String lastName,
     required String email,
     required String password,
   }) =>
       provider.register(
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         password: password,
       );
