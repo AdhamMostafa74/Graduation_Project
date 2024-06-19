@@ -45,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(90),
         child: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
