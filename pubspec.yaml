@@ -32,8 +32,10 @@ dependencies:
     sdk: flutter
 
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  iconsax: ^0.0.8
   cupertino_icons: ^1.0.6
   firebase_core: ^2.25.5
   firebase_auth: ^4.17.6
@@ -46,56 +48,78 @@ dependencies:
   get: ^4.6.6
   webview_flutter: ^4.8.0
   http: ^1.2.1
+  carousel_slider: ^4.2.1
+
+  # new dep.
+
+  intl: ^0.18.1
+  lottie: ^2.7.0
+  shimmer: ^3.0.0
+  clipboard: ^0.1.3
+  image_picker: ^1.0.4
+  url_launcher: ^6.2.1
+  flutter_dropzone: ^3.0.7
+  flutter_typeahead: ^5.2.0
+  connectivity_plus: ^5.0.1
+  multi_select_flutter: ^4.1.3
+  flutter_native_splash: ^2.4.0
+  google_fonts: ^6.2.1
+  readmore: ^3.0.0
+  cached_network_image: ^3.3.1
+
+  #firebase.
+  cloud_firestore: ^4.15.6
+  firebase_storage: ^11.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^3.0.0
   test: ^1.24.9
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
+    - assets/images/animations/
+    - assets/images/banners/
+    - assets/images/onBoardingImages/
+    - assets/images/content/
+    - assets/icons/categories/
+    - assets/fonts/
+    - assets/logos/
+    - assets/images/products/
+    - assets/images/Cars/
+    - assets/images/Cars/Category Icons/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
+  fonts:
+    - family: Urbanist
+      fonts:
+        - asset: assets/fonts/urbanist/Urbanist-Light.ttf
+          weight: 300
+        - asset: assets/fonts/urbanist/Urbanist-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/urbanist/Urbanist-Italic.ttf
+          style: italic
+        - asset: assets/fonts/urbanist/Urbanist-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/urbanist/Urbanist-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/urbanist/Urbanist-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/urbanist/Urbanist-Bold.ttf
+          weight: 800
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+
+    - family: Poppins
+      fonts:
+       - asset: assets/fonts/Poppins-Light.ttf
+         weight: 100
+       - asset: assets/fonts/Poppins-Medium.ttf
+         weight: 400
+       - asset: assets/fonts/Poppins-Bold.ttf
+         weight: 600

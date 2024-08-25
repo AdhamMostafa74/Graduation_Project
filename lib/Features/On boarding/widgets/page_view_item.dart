@@ -1,8 +1,8 @@
-import 'package:a/Utilities/space_Widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Utilities/Media_Query.dart';
+import '../../../Utilities/core/Media_Query.dart';
+import '../../../Utilities/core/space_Widget.dart';
 
 class PageViewItem extends StatelessWidget {
   const PageViewItem({super.key, this.title, this.subTitle, this.image});

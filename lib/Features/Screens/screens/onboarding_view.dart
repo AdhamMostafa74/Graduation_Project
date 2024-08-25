@@ -1,5 +1,6 @@
-import 'package:a/Features/On%20boarding/widgets/onboarding_body.dart';
 import 'package:flutter/material.dart';
+
+import '../../On boarding/widgets/onboarding_body.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});

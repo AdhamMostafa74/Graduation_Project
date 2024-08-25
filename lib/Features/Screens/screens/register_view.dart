@@ -1,16 +1,17 @@
-import 'package:a/Constants/dialogues.dart';
-import 'package:a/Features/Screens/Widgets/login_view.dart';
-import 'package:a/Features/Screens/Widgets/verification.dart';
-import 'package:a/Services/auth_exceptions.dart';
-import 'package:a/Services/auth_service.dart';
-import 'package:a/Utilities/buttons.dart';
-import 'package:a/Utilities/space_Widget.dart';
-import 'package:a/Utilities/text_fields.dart';
+
+import 'package:a/Features/Screens/screens/verification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Constants/colors.dart';
-import '../../../Utilities/Media_Query.dart';
+import '../../../Constants/dialogues.dart';
+import '../../../Services/firebase_services/auth_exceptions.dart';
+import '../../../Services/firebase_services/auth_service.dart';
+import '../../../Utilities/core/Media_Query.dart';
+import '../../../Utilities/core/buttons.dart';
+import '../../../Utilities/core/space_Widget.dart';
+import '../../widgets/texts/text_fields.dart';
 import '../../On boarding/widgets/app_bar_content.dart';
+import 'login_view.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -52,11 +53,13 @@ class _RegisterViewState extends State<RegisterView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(80),
         child: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
-            colors: [mainColor, mainBlue],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [AColors.mainColor, AColors.mainBlue],
           )),
           child: const AppBarContent(
             text: "Create your Account",
@@ -178,7 +181,7 @@ class _RegisterViewState extends State<RegisterView> {
                             child: const Text(
                               "Login",
                               style: TextStyle(
-                                  color: mainColor,
+                                  color: AColors.mainColor,
                                   decoration: TextDecoration.underline),
                             )),
                       ],

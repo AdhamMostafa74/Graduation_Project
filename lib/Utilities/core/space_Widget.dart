@@ -1,4 +1,4 @@
-import 'package:a/Utilities/Media_Query.dart';
+import 'package:a/Utilities/core/Media_Query.dart';
 import 'package:flutter/material.dart';
 
 class VerticalSpacer extends StatelessWidget {

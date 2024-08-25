@@ -1,7 +1,9 @@
-import 'package:a/Constants/routes.dart';
-import 'package:a/Constants/dialogues.dart';
-import 'package:a/Services/auth_service.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../../Constants/dialogues.dart';
+import '../../../Constants/routes.dart';
+import '../../../Services/firebase_services/auth_service.dart';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({super.key});

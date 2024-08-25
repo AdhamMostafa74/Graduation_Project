@@ -1,13 +1,13 @@
-
-import 'package:a/Presentation/splash.dart';
+import 'package:a/Utilities/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import '../Constants/routes.dart';
-import '../Services/auth_service.dart';
-import 'Screens/Widgets/login_view.dart';
-import 'Screens/Widgets/main_page.dart';
-import 'Screens/Widgets/register_view.dart';
-import 'Screens/Widgets/verification.dart';
+import '../Presentation/splash.dart';
+import '../Services/firebase_services/auth_service.dart';
+import 'Screens/screens/login_view.dart';
+import 'Screens/screens/main_page.dart';
+import 'Screens/screens/register_view.dart';
+import 'Screens/screens/verification.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,10 +15,8 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'Register',
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
+    themeMode: ThemeMode.system,
+    theme: ATheme.lightTheme,
     home: const SplashScreen(),
     routes: {
       loginRoute: (context) => const LoginView(),

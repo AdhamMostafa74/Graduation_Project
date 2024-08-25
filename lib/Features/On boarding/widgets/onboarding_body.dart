@@ -1,10 +1,13 @@
-import 'package:a/Features/On%20boarding/widgets/page_view.dart';
-import 'package:a/Features/Screens/Widgets/login_view.dart';
-import 'package:a/Utilities/Media_Query.dart';
-import 'package:a/Utilities/buttons.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+
+import '../../../Utilities/core/Media_Query.dart';
+import '../../../Utilities/core/buttons.dart';
+import '../../Screens/screens/login_view.dart';
+import 'page_view.dart';
 
 class OnBoardingViewBody extends StatefulWidget {
   const OnBoardingViewBody({super.key});

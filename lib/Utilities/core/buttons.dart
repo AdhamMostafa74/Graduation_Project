@@ -15,7 +15,7 @@ class GeneralButton extends StatelessWidget {
         width: width,
         decoration:  BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: mainColor,
+          color: AColors.mainColor,
         ),
         child:  Center(
           child: Text(

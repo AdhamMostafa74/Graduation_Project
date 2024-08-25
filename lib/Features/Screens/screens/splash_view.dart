@@ -1,8 +1,8 @@
-import 'package:a/Features/Screens/Widgets/onboarding_view.dart';
-import 'package:a/Utilities/Media_Query.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import '../../../Utilities/core/Media_Query.dart';
+import 'onboarding_view.dart';
 
 class SplashBody extends StatefulWidget {
   const SplashBody({super.key});
@@ -25,8 +25,8 @@ class _SplashBodyState extends State<SplashBody>
     animationController?.forward();
     Timer(
         const Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (c) => const OnBoardingView())));
+        () => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (c) => const OnBoardingView())));
   }
 
   @override
@@ -48,21 +48,21 @@ class _SplashBodyState extends State<SplashBody>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AnimatedBuilder(
-                animation: fadingAnimation!,
-                builder: (context, _) => Opacity(
-                  opacity: fadingAnimation?.value,
-                  child: const Text(
-                    "Project Alpha",
-                    style: TextStyle(
-                      fontSize: 45,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              // AnimatedBuilder(
+              //   animation: fadingAnimation!,
+              //   builder: (context, _) => Opacity(
+              //     opacity: fadingAnimation?.value,
+              //     child: const Text(
+              //       "Arabeity",
+              //       style: TextStyle(
+              //         fontSize: 45,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Image.asset(
-                'assets/images/driving wheel.jpg',
+                'assets/images/onBoardingImages/splash.png',
               ),
             ],
           ),

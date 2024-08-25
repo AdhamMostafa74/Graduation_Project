@@ -1,17 +1,18 @@
-import 'package:a/Constants/colors.dart';
-import 'package:a/Features/On%20boarding/widgets/app_bar_content.dart';
-import 'package:a/Features/Screens/Widgets/main_page.dart';
-import 'package:a/Features/Screens/Widgets/register_view.dart';
-import 'package:a/Features/Screens/Widgets/verification.dart';
-import 'package:a/Services/auth_service.dart';
-import 'package:a/Utilities/Media_Query.dart';
-import 'package:a/Utilities/buttons.dart';
-import 'package:a/Utilities/space_Widget.dart';
-import 'package:a/Utilities/text_fields.dart';
+
+import 'package:a/Features/Screens/screens/register_view.dart';
+import 'package:a/Features/Screens/screens/verification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../Constants/colors.dart';
 import '../../../Constants/dialogues.dart';
-import '../../../Services/auth_exceptions.dart';
+import '../../../Services/firebase_services/auth_exceptions.dart';
+import '../../../Services/firebase_services/auth_service.dart';
+import '../../../Utilities/core/Media_Query.dart';
+import '../../../Utilities/core/buttons.dart';
+import '../../../Utilities/core/space_Widget.dart';
+import '../../widgets/texts/text_fields.dart';
+import '../../On boarding/widgets/app_bar_content.dart';
+import 'main_page.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -45,13 +46,16 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
+        preferredSize: const Size.fromHeight(80),
         child: Container(
+          alignment: Alignment.center,
           decoration: const BoxDecoration(
               gradient: LinearGradient(
-            colors: [mainColor, mainBlue],
+                begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [AColors.mainColor, AColors.mainBlue],
           )),
-          child: const AppBarContent(text: "Login into your Account",),
+          child: const AppBarContent(text: "Login",),
         ),
       ),
       body: FutureBuilder(
@@ -134,7 +138,7 @@ class _LoginViewState extends State<LoginView> {
                           },
                           child: const Text(
                             "Sign up",
-                            style: TextStyle(color: mainColor, decoration: TextDecoration.underline),
+                            style: TextStyle(color: AColors.mainColor, decoration: TextDecoration.underline),
 
                           )),
                     ],

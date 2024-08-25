@@ -14,10 +14,10 @@ class CustomDotsIndicator extends StatelessWidget {
       position: dotPosition!,
       decorator: DotsDecorator(
         color: Colors.transparent,
-        activeColor: mainColor,
+        activeColor: AColors.mainColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: const BorderSide(color: mainColor),
+          side: const BorderSide(color: AColors.mainColor),
         ),
       ),
     );
